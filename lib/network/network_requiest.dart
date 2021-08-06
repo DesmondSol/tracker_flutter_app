@@ -11,7 +11,7 @@ class NetworkRequest {
     List<Photo> photos = list.map((model) => Photo.fromJson(model)).toList();
     return photos;
   }
-Future<List<Photo>> fetchPhotos() async{
+static Future<List<Photo>> fetchPhotos() async{
     final response = await http.get(Uri.parse('$url'));
     if(response.statusCode == 200){
       return compute(parsePhotos, response.body);
