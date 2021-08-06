@@ -1,113 +1,283 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'drawer/drawer.dart';
 
 void main() {
   runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        // This is the theme of your application.
-        //
-        // Try running your application with "flutter run". You'll see the
-        // application has a blue toolbar. Then, without quitting the app, try
-        // changing the primarySwatch below to Colors.green and then invoke
-        // "hot reload" (press "r" in the console where you ran "flutter run",
-        // or simply save your changes to "hot reload" in a Flutter IDE).
-        // Notice that the counter didn't reset back to zero; the application
-        // is not restarted.
-        primarySwatch: Colors.blue,
-      ),
-      home: MyHomePage(title: 'Flutter Demo Home Page'),
+      home: MainPage(),
     );
   }
 }
 
-class MyHomePage extends StatefulWidget {
-  MyHomePage({Key? key, required this.title}) : super(key: key);
+var indexClicked = 0;
 
-  // This widget is the home page of your application. It is stateful, meaning
-  // that it has a State object (defined below) that contains fields that affect
-  // how it looks.
-
-  // This class is the configuration for the state. It holds the values (in this
-  // case the title) provided by the parent (in this case the App widget) and
-  // used by the build method of the State. Fields in a Widget subclass are
-  // always marked "final".
-
-  final String title;
-
+class MainPage extends StatefulWidget {
   @override
-  _MyHomePageState createState() => _MyHomePageState();
+  _MainPageState createState() => _MainPageState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
+class _MainPageState extends State<MainPage> {
+  final pages = [
+    Center(child: Text('Starred')),
+    Center(
+      child: Text('Starred'),
+    ),
+    Center(
+      child: Text('Sent'),
+    ),
+    Center(
+      child: Text('Trash'),
+    ),
+    Center(
+      child: Text('Trash'),
+    ),
+    Center(
+      child: Text('Spam'),
+    ),
+  ];
+  final titles = [
+    'Channels',
+    'Filter',
+    'Favorite',
+    'Share',
+    'Watchlist',
+    'About Us',
+  ];
 
-  void _incrementCounter() {
-    setState(() {
-      // This call to setState tells the Flutter framework that something has
-      // changed in this State, which causes it to rerun the build method below
-      // so that the display can reflect the updated values. If we changed
-      // _counter without calling setState(), then the build method would not be
-      // called again, and so nothing would appear to happen.
-      _counter++;
-    });
+  Function updateState(int index) {
+    return () {
+      setState(() {
+        indexClicked = index;
+      });
+      Navigator.pop(context);
+    };
   }
 
+  Icon search = Icon(Icons.search);
+  Widget title = Text('Channels');
+  final searchController = TextEditingController();
   @override
   Widget build(BuildContext context) {
-    // This method is rerun every time setState is called, for instance as done
-    // by the _incrementCounter method above.
-    //
-    // The Flutter framework has been optimized to make rerunning build methods
-    // fast, so that you can just rebuild anything that needs updating rather
-    // than having to individually change instances of widgets.
     return Scaffold(
       appBar: AppBar(
-        // Here we take the value from the MyHomePage object that was created by
-        // the App.build method, and use it to set our appbar title.
-        title: Text(widget.title),
+        title: title,
+        actions: <Widget>[
+          indexClicked == 0
+              ? IconButton(
+                  onPressed: () {
+                    setState(() {
+                      if (this.search.icon == Icons.search) {
+                        this.search = Icon(Icons.cancel);
+                        this.title = Container(
+                          height: 35,
+                          child: TextField(
+                            cursorColor: Colors.black,
+                            controller: searchController,
+                            decoration: InputDecoration(
+                              // border: OutlineInputBorder(),
+                              hintText: 'Search',
+                              filled: true,
+                              fillColor: Colors.white,
+                            ),
+                            onChanged: (text) {},
+                          ),
+                        );
+                      } else {
+                        this.search = Icon(Icons.search);
+                        this.title = Text('Channel');
+                      }
+                    });
+                  },
+                  icon: search)
+              : this.title = Text(titles[indexClicked]),
+          Icon(Icons.more_vert)
+        ],
+        backgroundColor: Color(0xFFFF00FF),
       ),
-      body: Center(
-        // Center is a layout widget. It takes a single child and positions it
-        // in the middle of the parent.
+      body: pages[indexClicked],
+      drawer: Drawer(
         child: Column(
-          // Column is also a layout widget. It takes a list of children and
-          // arranges them vertically. By default, it sizes itself to fit its
-          // children horizontally, and tries to be as tall as its parent.
-          //
-          // Invoke "debug painting" (press "p" in the console, choose the
-          // "Toggle Debug Paint" action from the Flutter Inspector in Android
-          // Studio, or the "Toggle Debug Paint" command in Visual Studio Code)
-          // to see the wireframe for each widget.
-          //
-          // Column has various properties to control how it sizes itself and
-          // how it positions its children. Here we use mainAxisAlignment to
-          // center the children vertically; the main axis here is the vertical
-          // axis because Columns are vertical (the cross axis would be
-          // horizontal).
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Text(
-              'You have pushed the button this many times:',
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            DrawerHeader(
+              // decoration: BoxDecoration(
+
+              //   image: DecorationImage(
+              //     fit: BoxFit.fill,
+              //     image: AssetImage('assets/images/drawer.jpg'),
+              //   ),
+              // ),
+              padding: EdgeInsets.all(0),
+              child: Container(
+                color: Color(0xFFFF00FF),
+                child: Column(
+                  children: [
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    CircleAvatar(
+                      radius: 42,
+                      backgroundImage: AssetImage('assets/images/profile.jpg'),
+                    ),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    Text(
+                      'Simreteab Mekbib',
+                      style: GoogleFonts.sanchez(
+                        fontSize: 15,
+                        color: Colors.white,
+                        fontWeight: FontWeight.w400,
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 5,
+                    ),
+                    Text(
+                      'se.sim@gmail.com',
+                      style: GoogleFonts.sanchez(
+                        fontSize: 10,
+                        color: Colors.white,
+                        fontWeight: FontWeight.w400,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
             ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headline4,
+            Expanded(
+              child: ListView(
+                padding: EdgeInsets.zero,
+                children: [
+                  AppDrawerTile(
+                    index: 0,
+                    onTap: updateState(0),
+                  ),
+                  AppDrawerTile(
+                    index: 1,
+                    onTap: updateState(1),
+                  ),
+                  AppDrawerTile(
+                    index: 2,
+                    onTap: updateState(2),
+                  ),
+                  AppDrawerTile(
+                    index: 3,
+                    onTap: updateState(3),
+                  ),
+                  AppDrawerTile(
+                    index: 4,
+                    onTap: updateState(4),
+                  ),
+                  AppDrawerTile(
+                    index: 5,
+                    onTap: updateState(5),
+                  ),
+                  const SizedBox(
+                    height: 30,
+                  ),
+                  // const AppDrawerDivider(),
+                  // const SizedBox(
+                  //   height: 10,
+                  // ),
+                  // Center(
+                  //   child: Text(
+                  //     'JetMail',
+                  //     style: GoogleFonts.sanchez(
+                  //       fontWeight: FontWeight.w500,
+                  //       fontStyle: FontStyle.italic,
+                  //       fontSize: 20,
+                  //       color: Defaults.drawerItemSelectedColor,
+                  //     ),
+                  //   ),
+                  // ),
+                  // const SizedBox(
+                  //   height: 5,
+                  // ),
+                  // Center(
+                  //   child: Text(
+                  //     'Version 1.2.5',
+                  //     style: GoogleFonts.sanchez(
+                  //       fontWeight: FontWeight.w500,
+                  //       fontStyle: FontStyle.italic,
+                  //       fontSize: 12,
+                  //       color: Defaults.drawerItemColor,
+                  //     ),
+                  //   ),
+                  // ),
+                  // const SizedBox(
+                  //   height: 10,
+                  // ),
+                  // const AppDrawerDivider(),
+                ],
+              ),
             ),
           ],
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
+    );
+  }
+}
+
+class AppDrawerDivider extends StatelessWidget {
+  const AppDrawerDivider({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Divider(
+      height: 1,
+      thickness: 1,
+      color: Defaults.drawerItemColor,
+      indent: 3,
+      endIndent: 3,
+    );
+  }
+}
+
+class AppDrawerTile extends StatelessWidget {
+  const AppDrawerTile({
+    Key? key,
+    @required this.index,
+    @required this.onTap,
+  }) : super(key: key);
+
+  final index;
+  final onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 8.0),
+      child: ListTile(
+        onTap: onTap,
+        selected: indexClicked == index,
+        selectedTileColor: Defaults.drawerSelectedTileColor,
+        leading: Icon(
+          Defaults.drawerItemIcon[index],
+          size: 35,
+          color: indexClicked == index
+              ? Defaults.drawerItemSelectedColor
+              : Defaults.drawerItemColor,
+        ),
+        title: Text(
+          Defaults.drawerItemText[index],
+          style: GoogleFonts.sanchez(
+            fontSize: 20,
+            fontWeight: FontWeight.w500,
+            color: indexClicked == index
+                ? Defaults.drawerItemSelectedColor
+                : Defaults.drawerItemColor,
+          ),
+        ),
+      ),
     );
   }
 }
