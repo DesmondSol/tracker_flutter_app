@@ -17,7 +17,7 @@ class _HomeState extends State<Home> {
         childAspectRatio: 1,
         mainAxisSpacing: 4,
         crossAxisSpacing: 4,
-        children: snapshot.data.map((photo) {
+        children: snapshot.data!.map((photo) {
           return GestureDetector(
             child: GridTile(
               child: PhotoCell(photo),

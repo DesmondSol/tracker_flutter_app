@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'drawer/drawer.dart';
+import 'model/home.dart';
 
 void main() {
   runApp(MyApp());
@@ -24,7 +25,7 @@ class MainPage extends StatefulWidget {
 
 class _MainPageState extends State<MainPage> {
   final pages = [
-    Center(child: Text('Starred')),
+    Home(),
     Center(
       child: Text('Starred'),
     ),
