@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:sol_flutter_app/cell/grid_cell.dart';
+import 'package:sol_flutter_app/model/detail.dart';
 import 'package:sol_flutter_app/network/network_requiest.dart';
 import 'photo.dart';
 
@@ -31,7 +32,12 @@ class _HomeState extends State<Home> {
     );
   }
 
-  gotoDetailpage(BuildContext context, Photo photo) {}
+  gotoDetailpage(BuildContext context, Photo photo) {
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (BuildContext context) => Detail(photo: photo)));
+  }
 
   circularProgress() {
     return Center(
