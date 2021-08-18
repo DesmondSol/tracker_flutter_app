@@ -36,7 +36,7 @@ class _MainPageState extends State<MainPage> {
       child: Text('Trash'),
     ),
     Center(
-      child: Text('Trash'),
+      child: Text('another page'),
     ),
     Center(
       child: Text('Spam'),
